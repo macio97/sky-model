@@ -50,7 +50,7 @@ LAMBDA = np.arange(MIN_WAVELENGTH, MAX_WAVELENGTH +
 SUN_BLACKBODY = (2 * pi * PLANCK_CONSTANT * LIGHT_SPEED * LIGHT_SPEED) / (LAMBDA**5 *
                                                                           (np.exp((PLANCK_CONSTANT * LIGHT_SPEED) / (BOLTZMANN_CONSTANT * SUN_TEMPERATURE * LAMBDA)) - 1)) * 10**-9
 # irradiance on top of atmosphere (W*m^-2*nm^-1)
-IRRADIANCE = SUN_BLACKBODY * \
+SUN_IRRADIANCE = SUN_BLACKBODY * \
     ((SUN_RADIUS * SUN_RADIUS) / (DISTANCE_EARTH_SUN * DISTANCE_EARTH_SUN))
 # Rayleigh scattering coefficient (m^-1)
 RAYLEIGH_COEFFICIENT = ((8 * pi**3) * (AIR_IOR * AIR_IOR - 1)

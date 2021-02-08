@@ -9,10 +9,9 @@ dust_density = 1
 ozone_density = 1
 # divisions of the rays (more divisions produce more accurate results)
 steps = 32
-steps_light = 16
 # image size (pixels)
-pixels_x = 128
-pixels_y = 32
+pixels_x = 64
+pixels_y = int(pixels_x / 2)
 # exposure
 exposure = -3.5
 # look (contrast)

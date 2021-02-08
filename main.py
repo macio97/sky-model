@@ -25,7 +25,8 @@ def n_threads():
 
 
 # number of threads
-nprocess = n_threads()
+#nprocess = n_threads()
+nprocess = 1
 
 
 def calc_pixel(xmin, xmax, pix_array):

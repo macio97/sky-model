@@ -38,7 +38,8 @@ def atmosphere_intersection(ray_origin, ray_direction):
     b = -2 * np.dot(ray_direction, -ray_origin)
     c = np.dot(ray_origin, ray_origin) - ATMOSPHERE_RADIUS * ATMOSPHERE_RADIUS
     t = (-b + sqrt(b * b - 4 * c)) / 2
-    return ray_origin + ray_direction * t
+    # return ray_origin + ray_direction * t
+    return t
 
 
 def surface_intersection(ray_origin, ray_direction):
@@ -50,9 +51,11 @@ def surface_intersection(ray_origin, ray_direction):
     else:
         t = (-b - sqrt(discriminant)) / 2
         if t > 0:
+            # return ray_origin + ray_direction * t
             return t
         t = (-b + sqrt(discriminant)) / 2
         if t > 0:
+            # return ray_origin + ray_direction * t
             return t
         else:
             return -1
