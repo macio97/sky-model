@@ -1,27 +1,21 @@
 # Sky Generator
 This is a sky generator that calculates a physically based sky which is based on an improved version of [Nishita](https://www.scratchapixel.com/lessons/procedural-generation-virtual-worlds/simulating-sky/simulating-colors-of-the-sky) 1993 single scattering model.
 
-![Sky](https://lh3.googleusercontent.com/pw/ACtC-3dvQTeRSLtduEXAtJ3GmZpDoqHydyYjoURkHCscSNFMtOLUcSQJPoSJOQ6As8aWnZkym-DsuMhXVtjlaAAnTSAP3pV0-KYMYWW33-hjsv-0HFCZUZlBoVyWMOXZ7LCWejSUII5RAb--_8kdhFEwIzBmGw=w1024-h256-no?authuser=0)
-
 ### Install
-* Install **Python 3.8** or a later version
-* Install pip library
+* Get **Python 3.8** or a later version
+* Get pip library
+* Get numpy library
+* Get pillow library
+
+On Arch Linux just run the following command
 ```
-sudo apt install python3-pip
-```
-* Install numpy library
-```
-pip3 install numpy
-```
-* Install pillow library
-```
-pip3 install pillow
+sudo pacman -S python python-pip python-numpy python-pillow
 ```
 
 ### Run
 To run the code, enter:
 ```
-python3 main.py
+python main.py
 ```
 
 ### How it works
