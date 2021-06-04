@@ -24,7 +24,7 @@ def n_threads():
         return (int)(os.popen('grep -c cores /proc/cpuinfo').read())
 
 
-# number of threads
+# number of threads (using just 1 thread for debugging)
 #nprocess = n_threads()
 nprocess = 1
 

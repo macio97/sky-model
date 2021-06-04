@@ -13,7 +13,7 @@ steps = 32
 pixels_x = 64
 pixels_y = int(pixels_x / 2)
 # exposure
-exposure = -3.5
+exposure = -3
 # look (contrast)
 look = "high_contrast"
 # save PNG image in current folder

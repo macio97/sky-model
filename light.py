@@ -42,12 +42,12 @@ def ray_optical_depth(ray_origin, ray_direction, ray_length):
 
 def multiple_scattering(ray_direction):
     '''
-    still using 1 single sample because it still gives errors,
+    still using 1 single sample for now,
     when ready we can use multiple samples per pixel as Monte Carlo method.
     the algorithm is (correct me if i'm wrong):
     - start ray from camera, end at random position, accumulate light from sun -> end point -> camera
     - then shoot a ray at random direction from previous end point, and accumulate sun -> new end point -> old end point -> camera
-    - continue till the bounces end
+    - continue until the number of bounces end
     '''
     ray_origin = camera_position
     throughput = 0
@@ -88,11 +88,10 @@ def multiple_scattering(ray_direction):
         scattering_R = coefficients[0] * density_R * phase_R
         scattering_M = coefficients[1] * density_M * phase_M
         scattering = scattering_R * phase_R + scattering_M * phase_M
-
         # change ray direction for a new path
-        ray_direction = np.array(
-            [random(-1, 1), random(-1, 1), random(-1, 1)])
-
+        sphere_lat = random(0, pi)
+        sphere_lon = random(0, 2 * pi)
+        ray_direction = fun.normalized_vector(sphere_lat, sphere_lon)
         # accumulate light
         throughput += SUN_IRRADIANCE * transmittance * scattering * transmittance_sun
 

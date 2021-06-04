@@ -34,11 +34,14 @@ def geographical_to_direction(lat, lon):
     return np.array([cos(lat) * cos(lon), cos(lat) * sin(lon), sin(lat)])
 
 
+def normalized_vector(lat, lon):
+    return np.array([sin(lat) * cos(lon), sin(lat) * sin(lon), cos(lat)])
+
+
 def atmosphere_intersection(ray_origin, ray_direction):
     b = -2 * np.dot(ray_direction, -ray_origin)
     c = np.dot(ray_origin, ray_origin) - ATMOSPHERE_RADIUS * ATMOSPHERE_RADIUS
     t = (-b + sqrt(b * b - 4 * c)) / 2
-    # return ray_origin + ray_direction * t
     return t
 
 
@@ -51,11 +54,9 @@ def surface_intersection(ray_origin, ray_direction):
     else:
         t = (-b - sqrt(discriminant)) / 2
         if t > 0:
-            # return ray_origin + ray_direction * t
             return t
         t = (-b + sqrt(discriminant)) / 2
         if t > 0:
-            # return ray_origin + ray_direction * t
             return t
         else:
             return -1
