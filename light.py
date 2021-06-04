@@ -51,10 +51,11 @@ def multiple_scattering(ray_direction):
     '''
     n_bounces = 4
     ray_origin = camera_position
-    throughput = 0
+    light = 0
+    throughput = 1
 
     # light bounces per sample
-    for _ in range(n_bounces):
+    for i in range(n_bounces):
         # if Earth surface isn't hit then hit atmosphere (one or the other needs to be hit)
         distance = fun.surface_intersection(ray_origin, ray_direction)
         if distance < 0:
@@ -89,15 +90,45 @@ def multiple_scattering(ray_direction):
         scattering_R = coefficients[0] * density_R * phase_R
         scattering_M = coefficients[1] * density_M * phase_M
         scattering = scattering_R * phase_R + scattering_M * phase_M
+        # accumulate light
+        light += SUN_IRRADIANCE * throughput * scattering * transmittance_sun
         # change ray direction and origin for a new path
         sphere_lat = random(0, pi)
         sphere_lon = random(0, 2 * pi)
-        ray_direction = fun.normalize_vector(sphere_lat, sphere_lon)
+        new_ray_direction = fun.normalize_vector(sphere_lat, sphere_lon)
         ray_origin = ray_end
-        # accumulate light
-        throughput += SUN_IRRADIANCE * transmittance * scattering * transmittance_sun
 
-    return throughput
+        if i != n_bounces-1:
+            # if Earth surface isn't hit then hit atmosphere (one or the other needs to be hit)
+            distance = fun.surface_intersection(ray_origin, new_ray_direction)
+            if distance < 0:
+                distance = fun.atmosphere_intersection(
+                    ray_origin, new_ray_direction)
+            # pick a random point between origin and end of ray
+            ray_length = random(0, 1) * distance
+            ray_end = ray_origin + ray_direction * ray_length
+            # calculate optical depths
+            optical_depth = ray_optical_depth(
+                ray_origin, new_ray_direction, ray_length)
+            # attenuation of light
+            transmittance = np.exp(-np.sum(coefficients * optical_depth))
+            # phase function (sr^-1)
+            mu = np.dot(ray_direction, new_ray_direction)
+            phase_R = fun.phase_rayleigh(mu)
+            phase_M = fun.phase_mie(mu)
+            # densities on scattering point
+            height = sqrt(np.dot(ray_end, ray_end)) - EARTH_RADIUS
+            density_R = fun.density_rayleigh(height)
+            density_M = fun.density_mie(height)
+            # compute scattering
+            scattering_R = coefficients[0] * density_R * phase_R
+            scattering_M = coefficients[1] * density_M * phase_M
+            scattering = scattering_R * phase_R + scattering_M * phase_M
+
+            # update throughput
+            throughput *= transmittance * scattering
+
+    return light
 
 
 def monte_carlo(ray_direction):
