@@ -112,6 +112,6 @@ def monte_carlo(ray_direction):
         xyz = fun.spectrum_to_xyz(spectrum)
         # convert xyz to srgb
         srgb += fun.xyz_to_srgb(xyz)
-    
+
     # average
     return srgb / n_samples

@@ -71,7 +71,7 @@ def spectrum_to_xyz(spectrum):
 def xyz_to_srgb(xyz):
     # XYZ to sRGB linear
     return np.dot(ILLUMINANT_D65, xyz)
-    
+
 
 def srgb_to_rgb(srgb_linear, exposure):
     # apply exposure
