@@ -24,9 +24,8 @@ def n_threads():
         return (int)(os.popen('grep -c cores /proc/cpuinfo').read())
 
 
-# number of threads (using just 1 thread for debugging)
-#nprocess = n_threads()
-nprocess = 1
+# number of threads (use 1 thread for debugging)
+nprocess = n_threads()
 
 
 def calc_pixel(xmin, xmax, pix_array):
@@ -40,12 +39,10 @@ def calc_pixel(xmin, xmax, pix_array):
             cam_lat = radians((j / pixels_y) * (90 + 0.5))
             # normalize camera rotation
             cam_dir = fun.geographical_to_direction(cam_lat, cam_lon)
-            # get spectrum from camera direction
-            spectrum = light.multiple_scattering(cam_dir)
-            # convert spectrum to xyz
-            xyz = fun.spectrum_to_xyz(spectrum)
-            # convert xyz to rgb
-            rgb = fun.xyz_to_rgb(xyz, exposure)
+            # calculate srgb using a Monte Carlo method
+            srgb = light.monte_carlo(cam_dir)
+            # apply filmic
+            rgb = fun.srgb_to_rgb(srgb, exposure)
             rgb_int = np.array(rgb * 255, int)
             # print to pixels array in shared memory
             pos = i * 3 * pixels_y + j * 3

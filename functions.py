@@ -34,7 +34,7 @@ def geographical_to_direction(lat, lon):
     return np.array([cos(lat) * cos(lon), cos(lat) * sin(lon), sin(lat)])
 
 
-def normalized_vector(lat, lon):
+def normalize_vector(lat, lon):
     return np.array([sin(lat) * cos(lon), sin(lat) * sin(lon), cos(lat)])
 
 
@@ -68,11 +68,14 @@ def spectrum_to_xyz(spectrum):
     return sum * WAVELENGTHS_STEP
 
 
-def xyz_to_rgb(xyz, exposure):
+def xyz_to_srgb(xyz):
     # XYZ to sRGB linear
-    sRGB_linear = np.dot(ILLUMINANT_D65, xyz)
+    return np.dot(ILLUMINANT_D65, xyz)
+    
+
+def srgb_to_rgb(srgb_linear, exposure):
     # apply exposure
-    sRGB_exp = sRGB_linear * 2**exposure
+    sRGB_exp = srgb_linear * 2**exposure
     # avoid negative values
     sRGB_1 = np.maximum(1e-5, sRGB_exp)
     # apply filmic log encoding

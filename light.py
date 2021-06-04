@@ -49,11 +49,12 @@ def multiple_scattering(ray_direction):
     - then shoot a ray at random direction from previous end point, and accumulate sun -> new end point -> old end point -> camera
     - continue until the number of bounces end
     '''
+    n_bounces = 4
     ray_origin = camera_position
     throughput = 0
 
     # light bounces per sample
-    for _ in range(4):
+    for _ in range(n_bounces):
         # if Earth surface isn't hit then hit atmosphere (one or the other needs to be hit)
         distance = fun.surface_intersection(ray_origin, ray_direction)
         if distance < 0:
@@ -88,11 +89,29 @@ def multiple_scattering(ray_direction):
         scattering_R = coefficients[0] * density_R * phase_R
         scattering_M = coefficients[1] * density_M * phase_M
         scattering = scattering_R * phase_R + scattering_M * phase_M
-        # change ray direction for a new path
+        # change ray direction and origin for a new path
         sphere_lat = random(0, pi)
         sphere_lon = random(0, 2 * pi)
-        ray_direction = fun.normalized_vector(sphere_lat, sphere_lon)
+        ray_direction = fun.normalize_vector(sphere_lat, sphere_lon)
+        ray_origin = ray_end
         # accumulate light
         throughput += SUN_IRRADIANCE * transmittance * scattering * transmittance_sun
 
     return throughput
+
+
+def monte_carlo(ray_direction):
+    n_samples = 1
+    srgb = np.array([0.0, 0.0, 0.0])
+
+    # samples
+    for _ in range(n_samples):
+        # get spectrum from camera direction
+        spectrum = multiple_scattering(ray_direction)
+        # convert spectrum to xyz
+        xyz = fun.spectrum_to_xyz(spectrum)
+        # convert xyz to srgb
+        srgb += fun.xyz_to_srgb(xyz)
+    
+    # average
+    return srgb / n_samples
